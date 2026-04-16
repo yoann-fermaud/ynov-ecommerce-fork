@@ -1,10 +1,26 @@
+require('dotenv').config();
+
 const express = require('express');
 const router = express.Router();
 const orders = require('../data/orders');
 
+const FEATURE_V2_ORDERS = process.env.FEATURE_V2_ORDERS === 'true';
+
+function getOrdersV1() {
+  return orders;
+}
+
+function getOrdersV2() {
+  return orders.map(o => ({
+    ...o,
+    totalFormatted: `€${o.total.toFixed(2)}`,
+  }));
+}
+
 // GET /api/orders
 router.get('/', (req, res) => {
-  res.json(orders);
+  const data = FEATURE_V2_ORDERS ? getOrdersV2() : getOrdersV1();
+  res.json(data);
 });
 
 // GET /api/orders/:id
