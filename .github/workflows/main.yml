@@ -1,7 +1,7 @@
-name: Develop
+name: Main
 on:
-  push:
-    branches: [develop]
+  pull_request:
+    branches: [main]
 
 jobs:
   tests:
@@ -38,3 +38,18 @@ jobs:
 
       - name: Run tests with coverage
         run: npm run test:coverage
+
+  sonarcloud:
+    needs: coverage
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
