@@ -9,7 +9,7 @@
     "lint": "eslint src/",
     "prepare": "husky",
     "test": "jest --runInBand --coverage=false",
-    "test:coverage": "jest --coverage --coverageReporters=json-summary --coverageReporters=lcov",
+    "test:coverage": "jest --coverage --collectCoverage",
     "test:node": "node --test"
   },
   "keywords": [],
