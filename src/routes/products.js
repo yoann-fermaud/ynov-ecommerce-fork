@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const router = express.Router();
 const products = require('../data/products');
@@ -25,6 +27,9 @@ router.get('/', (req, res) => {
 // GET /api/products/:id
 router.get('/:id', (req, res) => {
   const id = parseInt(req.params.id);
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'Product id must be a number' });
+  }
   const product = products.find(p => p.id === id);
   if (!product) {
     return res.status(404).json({ error: 'Product not found' });
